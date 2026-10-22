@@ -11,13 +11,7 @@ console.log("DNS servers configured:", dns.getServers());
 const app = express();
 app.use(express.json());
 app.use(cookieParser())
-app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://YOUR-FRONTEND-DOMAIN",
-  ],
-  credentials: true,
-}));
+app.use(cors());
 
 app.use("/api/auth", authRoutes);
 
