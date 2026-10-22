@@ -33,6 +33,11 @@ function App() {
     await axios.post(`${serverUrl}/api/auth/register`, data)
     .then((res) => {
       console.log("User Registered Successfuly");
+      alert("User Registred Successfuly");
+      setData({
+        email: "",
+        password: ""
+      })
     })
     .catch((error) => {
       console.log(error)
@@ -40,27 +45,63 @@ function App() {
     })
   }
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <h1>Please Register Here!!!</h1>
-      <input 
-      type="email" 
-      name="email" 
-      placeholder='enter your email'
-      value={data.email} 
-      onChange={handleChange}
-      /><br /><br />
+ return (
+    <div className="register-page">
+      <div className="register-card">
+        <div className="register-icon">✦</div>
 
-      <input 
-      type="password" 
-      name='password' 
-      placeholder='enter your password'
-      value={data.password} 
-      onChange={handleChange}
-      /><br /><br />
-      <button>Submit</button>
-    </form>
-  )
+        <p className="register-tag">GET STARTED TODAY</p>
+
+        <h1>Create Account</h1>
+
+        <p className="register-subtitle">
+          Join us today! Enter your details to get started.
+        </p>
+
+        <form onSubmit={handleSubmit} className="register-form">
+          <div className="input-group">
+            <label htmlFor="email">Email address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="you@example.com"
+              value={data.email}
+              onChange={handleChange}
+              autoComplete="email"
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter your password"
+              value={data.password}
+              onChange={handleChange}
+              autoComplete="new-password"
+              minLength={6}
+              required
+            />
+          </div>
+
+          <button type="submit" className="register-button">
+            Create Account <span>→</span>
+          </button>
+        </form>
+
+        <p className="register-footer">
+          Already have an account?{" "}
+          <a href="/login">Sign in</a>
+        </p>
+
+        <div className="register-bottom-line"></div>
+      </div>
+    </div>
+  );
 }
 
 export default App
