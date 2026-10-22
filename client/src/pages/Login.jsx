@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react"
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import "./Login.css"
 
 export default function Login(){
 
@@ -9,7 +10,7 @@ export default function Login(){
     password: ""
   });
 
-  const navigate = Navigate();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const {name, value} = e.target;
