@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react"
+import { Navigate } from "react-router-dom";
 
 export default function Login(){
 
@@ -7,6 +8,8 @@ export default function Login(){
     email: "",
     password: ""
   });
+
+  const navigate = Navigate();
 
   const handleChange = (e) => {
     const {name, value} = e.target;
@@ -29,6 +32,7 @@ export default function Login(){
       .then((res) => {
         console.log("Login Successful");
         alert("User LoggedIn Successfuly");
+        navigate("/")
       })
       .catch((err) => {
         console.log(error);
@@ -37,6 +41,7 @@ export default function Login(){
   }
 
   return (
+    <div className="loginpage">
     <form onSubmit={handleSubmit}>
       <h1>Login Here</h1>
       <input type="email"
@@ -55,5 +60,6 @@ export default function Login(){
 
       <button>LogIn</button>
     </form>
+    </div>
   )
 }
