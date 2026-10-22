@@ -17,8 +17,10 @@ app.use("/api/auth", authRoutes);
 
 
 app.post("/api/auth/test", (req, res) => {
+  const data = req.body;
   res.status(200).json({
     message: "Authentication routes are working",
+    data
   });
 });
 
