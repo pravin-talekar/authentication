@@ -1,7 +1,10 @@
-import axios from "axios";
-import { useState } from "react"
-import { useNavigate } from "react-router-dom";
 import "./Login.css"
+import { useState } from "react"
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+import { toast, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Login(){
 
@@ -11,7 +14,6 @@ export default function Login(){
   });
 
   const navigate = useNavigate();
-
   const handleChange = (e) => {
     const {name, value} = e.target;
     setData((prev) => ({
@@ -22,23 +24,32 @@ export default function Login(){
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Was Submited : ", data);
 
     const serverUrl = import.meta.env.VITE_SERVER_URL;
 
-    console.log(serverUrl)
 
+    try{
+      const response = await axios.post(`${serverUrl}/api/auth/login`, data);
+    
+        toast.success("Login Successful!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
 
-      await axios.post(`${serverUrl}/api/auth/login`, data)
-      .then((res) => {
-        console.log("Login Successful");
-        alert("User LoggedIn Successfuly");
-        navigate("/")
-      })
-      .catch((err) => {
-        console.log(error);
-      alert("Error during login")
-      })
+          onClose: () => {
+            navigate("/");
+          },
+        });
+      
+    }catch(err){
+      console.error("Login failed:", err);
+    }
   }
 
   return (
