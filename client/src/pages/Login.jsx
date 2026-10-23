@@ -42,25 +42,32 @@ export default function Login(){
   }
 
   return (
-    <div className="loginpage">
-    <form onSubmit={handleSubmit}>
-      <h1>Login Here</h1>
-      <input type="email"
-      placeholder="enter email"
-      name="email"
-      value={data.email}
-      onChange={handleChange}
-      /> <br /><br />
+    <div className="container">
+      <div className="left">
+        <img src="https://plus.unsplash.com/premium_photo-1690294614341-cf346ba0a637?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D" alt="logo" />
+      </div>
 
-      <input type="password"
-      placeholder="enter password"
-      name="password"
-      value={data.password}
-      onChange={handleChange}
-      /> <br /><br />
+      <div className="right">
+        <h1>Login Here</h1>
+        <form onSubmit={handleSubmit}>
 
-      <button>LogIn</button>
-    </form>
+          <input type="email"
+          placeholder="enter email"
+          name="email"
+          value={data.email}
+          onChange={handleChange}
+          />
+
+          <input type="password"
+          placeholder="enter password"
+          name="password"
+          value={data.password}
+          onChange={handleChange}
+          />
+
+          <button>LogIn</button>
+        </form>
+      </div>
     </div>
   )
 }
