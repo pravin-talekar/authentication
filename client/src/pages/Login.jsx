@@ -13,6 +13,8 @@ export default function Login(){
     password: ""
   });
 
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
   const handleChange = (e) => {
     const {name, value} = e.target;
@@ -24,11 +26,13 @@ export default function Login(){
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const startTime = Date.now();
 
     const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 
     try{
+      setLoading(true);
       const response = await axios.post(`${serverUrl}/api/auth/login`, data);
     
         toast.success("Login Successful!", {
@@ -49,6 +53,23 @@ export default function Login(){
       
     }catch(err){
       console.error("Login failed:", err);
+
+      toast.error(
+      err.response?.data?.message || "Login failed. Please try again.",
+        {
+          position: "top-right",
+          autoClose: 3000,
+          theme: "light",
+          transition: Bounce,
+        }
+      );
+    }finally {
+      const elapsedTime = Date.now() - startTime;
+      const remainingTime = Math.max(0, 700 - elapsedTime);
+
+      setTimeout(() => {
+        setLoading(false);
+      }, remainingTime);
     }
   }
 
@@ -76,7 +97,14 @@ export default function Login(){
           onChange={handleChange}
           />
 
-          <button>LogIn</button>
+          <button type="submit" disabled={loading}>
+            {loading ? (
+              <>
+                <span className="loader"></span>
+                  Logging in...
+              </>
+              ) : ("LogIn")}
+          </button>
         </form>
       </div>
     </div>
