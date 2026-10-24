@@ -1,7 +1,7 @@
 import "./Login.css"
 import { useState } from "react"
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import { toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -84,14 +84,14 @@ export default function Login(){
         <form onSubmit={handleSubmit}>
 
           <input type="email"
-          placeholder="enter email"
+          placeholder="Enter Email"
           name="email"
           value={data.email}
           onChange={handleChange}
           />
 
           <input type="password"
-          placeholder="enter password"
+          placeholder="Enter Password"
           name="password"
           value={data.password}
           onChange={handleChange}
@@ -106,6 +106,12 @@ export default function Login(){
               ) : ("LogIn")}
           </button>
         </form>
+        <div className="end">
+          Don't have an account?{" "}
+          <Link to="/register" className="endLink">
+            Register
+          </Link>
+        </div>
       </div>
     </div>
   )

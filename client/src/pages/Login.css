@@ -127,6 +127,13 @@ button:disabled {
   cursor: not-allowed;
 }
 
+.end{
+  margin-top: 5px;
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+  /* border: 1px solid black; */
+}
 
 
 /* Resposive */

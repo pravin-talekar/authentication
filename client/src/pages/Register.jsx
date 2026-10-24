@@ -1,101 +1,126 @@
-import { useState } from 'react'
+import "./Login.css"
+import { useState } from "react"
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
-export default function Register(){
+import { toast, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-     const [data, setData] = useState({
-        email: "",
-        password: ""
-      });
-      
-      const handleChange = (e) => {
-        setData({
-          ...data,
-          [e.target.name]: e.target.value
+export default function Login(){
+
+  const [data, setData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+  const handleChange = (e) => {
+    const {name, value} = e.target;
+    setData((prev) => ({
+      ...prev,
+      [name]: value
+    }))
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const startTime = Date.now();
+
+    const serverUrl = import.meta.env.VITE_SERVER_URL;
+
+
+    try{
+      setLoading(true);
+      const response = await axios.post(`${serverUrl}/api/auth/register`, data);
+    
+        toast.success("Register Successful!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+
+          onClose: () => {
+            navigate("/login");
+          },
         });
-      }
-    
-      const handleSubmit = async (e) => {
-        e.preventDefault();
-        
-        const formData = new FormData(e.currentTarget)
-    
-        const data = Object.fromEntries(formData.entries());
-        console.log(data);
-        const serverUrl = import.meta.env.VITE_SERVER_URL;
-        console.log(serverUrl)
-    
-        await axios.post(`${serverUrl}/api/auth/register`, data)
-        .then((res) => {
-          console.log("User Registered Successfuly");
-          alert("User Registred Successfuly");
-          setData({
-            email: "",
-            password: ""
-          })
-        })
-        .catch((error) => {
-          console.log(error)
-          alert("Enter registere user");
-        })
-      }
+      
+    }catch(err){
+      console.error("Register failed:", err);
 
-    return (
-    <div className="register-page">
-      <div className="register-card">
-        <div className="register-icon">✦</div>
+      toast.error(
+      err.response?.data?.message || "Register failed. Please try again.",
+        {
+          position: "top-right",
+          autoClose: 3000,
+          theme: "light",
+          transition: Bounce,
+        }
+      );
+    }finally {
+      const elapsedTime = Date.now() - startTime;
+      const remainingTime = Math.max(0, 700 - elapsedTime);
 
-        <p className="register-tag">GET STARTED TODAY</p>
+      setTimeout(() => {
+        setLoading(false);
+      }, remainingTime);
+    }
+  }
 
-        <h1>Create Account</h1>
+  return (
+    <div className="container">
+      <div className="left">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQs8wxfY2hDe8S36yGsE2P8x5rNVz38xnbMbwIHKLcD3g&s=10" alt="logo" />
+      </div>
 
-        <p className="register-subtitle">
-          Join us today! Enter your details to get started.
-        </p>
+      <div className="right">
+        <h1>Register Here</h1>
+        <form onSubmit={handleSubmit}>
 
-        <form onSubmit={handleSubmit} className="register-form">
-          <div className="input-group">
-            <label htmlFor="email">Email address</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="you@example.com"
-              value={data.email}
-              onChange={handleChange}
-              autoComplete="email"
-              required
-            />
-          </div>
+          <input type="username"
+          placeholder="Enter Username"
+          name="username"
+          value={data.username}
+          onChange={handleChange}
+          />
 
-          <div className="input-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Enter your password"
-              value={data.password}
-              onChange={handleChange}
-              autoComplete="new-password"
-              minLength={6}
-              required
-            />
-          </div>
+          <input type="email"
+          placeholder="Enter Email"
+          name="email"
+          value={data.email}
+          onChange={handleChange}
+          />
 
-          <button type="submit" className="register-button">
-            Create Account <span>→</span>
+          <input type="password"
+          placeholder="Enter Password"
+          name="password"
+          value={data.password}
+          onChange={handleChange}
+          />
+
+          <button type="submit" disabled={loading}>
+            {loading ? (
+              <>
+                <span className="loader"></span>
+                  Registering...
+              </>
+              ) : ("Register")}
           </button>
         </form>
-
-        <p className="register-footer">
+        <div className="end">
           Already have an account?{" "}
-          <Link to='/login'>Login</Link>
-        </p>
-
-        <div className="register-bottom-line"></div>
+          <Link to="/login" className="endLink">
+            LogIn
+          </Link>
+        </div>
       </div>
     </div>
-    )
+  )
 }
