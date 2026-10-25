@@ -23,9 +23,10 @@ async function registerUser(req, res){
         password: hash
     });
 
-    const token = await jwt.sign({
-        id: user._id
-    }, process.env.JWT_SECRET);
+    const token = await jwt.sign(
+        { id: user._id }, 
+        process.env.JWT_SECRET
+    );
 
     res.cookie("token", token);
 

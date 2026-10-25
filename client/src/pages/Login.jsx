@@ -6,7 +6,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function Login(){
+export default function Login({setUser}){
 
   const [data, setData] = useState({
     email: "",
@@ -34,6 +34,14 @@ export default function Login(){
     try{
       setLoading(true);
       const response = await axios.post(`${serverUrl}/api/auth/login`, data);
+
+      console.log("Response : ",response.data.user.username);
+      console.log("Response : ",response.data.user.email);
+
+      setUser({
+        username: response.data.user.username,
+        email: response.data.user.email
+      })
     
         toast.success("Login Successful!", {
           position: "top-right",

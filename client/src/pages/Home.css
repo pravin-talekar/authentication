@@ -43,6 +43,7 @@
 
   object-fit: cover;
   margin-left: auto;
+  cursor: pointer;
 }
 
 .box h1{

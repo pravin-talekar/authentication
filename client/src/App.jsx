@@ -6,15 +6,18 @@ import Login from './pages/Login';
 
 import { ToastContainer} from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { useState } from "react";
 
 function App() {
+
+  const [user, setUser] = useState(null);
 
  return (
     <>
      <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<Home user={user} />} />
         <Route path='/register' element={<Register />} />
-        <Route path='/login' element={<Login />} />
+        <Route path='/login' element={<Login setUser={setUser} />} />
       </Routes>
       <ToastContainer />
     </>
