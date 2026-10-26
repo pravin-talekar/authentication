@@ -12,7 +12,7 @@ console.log("DNS servers configured:", dns.getServers());
 const app = express();
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: "https://authentication-client-nf3s.onrender.com",
    credentials: true,
 }));
 
