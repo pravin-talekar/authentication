@@ -1,8 +1,11 @@
 import "./Home.css"
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export default function Logout(){
+
+    const navigate = useNavigate();
 
     const handleClick = async () => {
         try{
@@ -12,7 +15,9 @@ export default function Logout(){
                 { withCredentials: true }
             );
             if(response.status === 200){
+                console.log(response)
                 toast.success("Logout successful!");
+                navigate("/login");
             }
         }catch(error){
             console.log("Logout error : ", error)
