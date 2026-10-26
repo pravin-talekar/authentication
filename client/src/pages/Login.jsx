@@ -33,7 +33,7 @@ export default function Login({setUser}){
 
     try{
       setLoading(true);
-      const response = await axios.post(`${serverUrl}/api/auth/login`, data);
+      const response = await axios.post(`${serverUrl}/api/auth/login`, data, { withCredentials: true });
 
       console.log("Response : ",response.data.user.username);
       console.log("Response : ",response.data.user.email);

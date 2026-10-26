@@ -10,11 +10,22 @@ dns.setServers(["8.8.8.8", "8.8.4.4"]);
 console.log("DNS servers configured:", dns.getServers());
 
 const app = express();
+
+app.use(cors({
+    origin: "http://localhost:5173",
+   credentials: true,
+}));
+
 app.use(express.json());
 app.use(cookieParser())
-app.use(cors());
+
+
+
 
 app.use("/api/auth", authRoutes);
+
+
+// logoutUser();
 
 
 app.post("/api/auth/test", (req, res) => {

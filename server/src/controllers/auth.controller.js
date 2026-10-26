@@ -23,12 +23,12 @@ async function registerUser(req, res){
         password: hash
     });
 
-    const token = await jwt.sign(
-        { id: user._id }, 
-        process.env.JWT_SECRET
-    );
+    // const token = await jwt.sign(
+    //     { id: user._id }, 
+    //     process.env.JWT_SECRET
+    // );
 
-    res.cookie("token", token);
+    // res.cookie("token", token);
 
     res.status(201).json({
         message: "User registered successfuly",
@@ -37,6 +37,8 @@ async function registerUser(req, res){
 }
 
 async function loginUser(req, res) {
+
+    console.log("In login controller data : ", req.body)
     
     const {email, password} = req.body;
 
@@ -58,9 +60,28 @@ async function loginUser(req, res) {
 
     const token = jwt.sign({
         id: user._id
-    }, process.env.JWT_SECRET);
+    }, process.env.JWT_SECRET,
+    { expiresIn: "2m" }
+    );
 
-    res.cookie("token", token);
+    res.cookie("token", token, {
+        maxAge: 2 * 60 * 1000,
+        httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+     path: "/"
+    });
+
+//     res.clearCookie("token", {
+//     httpOnly: true,
+//     secure: false,
+//     sameSite: "lax",
+//     path: "/",
+// });
+
+// return res.status(200).json({
+//     message: "Old token cleared"
+// });
 
     res.status(200).json({
         message: "User logged in successfuly",
@@ -68,7 +89,37 @@ async function loginUser(req, res) {
     });
 }
 
+async function logoutUser(req, res) {
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+        path: "/",
+    });
+
+    return res.status(200).json({
+        message: "Logged out successfully",
+    });
+}
+
+async function getCurrentUser(req, res) {
+    console.log("This is getCurrentUser controller");
+
+    const userId = req.userId
+
+    const user = await userModel.findById(userId);
+
+    console.log(user);
+
+    res.status(200).json({
+        message: "This is Logged In User",
+        user
+    })
+}
+
 module.exports = {
     registerUser,
     loginUser,
+    getCurrentUser,
+    logoutUser
 }
